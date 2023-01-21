@@ -122,7 +122,7 @@ def main_global():
                     dst_path = os.path.join(frames_slect, img)
                     shutil.copy2(src_path, dst_path)
             def preguntar_texto():
-                print("Se ha seleccionado de forma aleatoria 4 imagenes en la ruta {frames_slect} ")
+                print("Se ha seleccionado de forma aleatoria 4 imagenes en la ruta ", frames_slect )
                 print("Indique la escala para procesar esas 4 imagenes, asi ustede elija el mejor tratamiendo de rudio")
                 opcion = input("Elige una relación de escala (2/3/4): ")
                 while opcion not in ["2", "3", "4"]:
@@ -167,8 +167,7 @@ def main_global():
                 real_cugan_exe = os.path.join("C:\\", "realcugan-ncnn-vulkan", "realcugan-ncnn-vulkan.exe")
                 subprocess.run([real_cugan_exe, "-i", image_path, "-o",  scaled_path , "-n", opcion2, "-s", opcion, "-f", "jpg", "-c", "3", "-g","0","-j","1:2:2", "-v"])
                 return scaled_path
-                scaled_path =real_cugan_ncnn_video()  
-            def use_ffmpeg(scaled_path):
+            def use_ffmpeg():
                 ffprobe_path = os.path.join("C:\\", "ffmpeg", "bin", "ffprobe.exe")
                 command = f"{ffprobe_path} -v 0 -of csv=p=0 -select_streams v:0 -show_entries stream=r_frame_rate {video_file_path}"
                 result = subprocess.run(command.split(), capture_output=True, text=True)
@@ -181,10 +180,11 @@ def main_global():
                 ffmpeg_path = os.path.join("C:\\", "ffmpeg", "bin", "ffmpeg.exe")
                 input_path = os.path.join(scaled_path, "%09d.jpg")
                 output_path = os.path.join(video_frames_folder, os.path.splitext(video_file_path)[0]+"4K-RC.mkv")
-                if audio_count  >= 2:
-                    subprocess.run([ffmpeg_path, "-i",  video_file_path,"-r", framerate,"-i", input_path,  "-map", "1:v", "-map", "0:a","-map", "0:s", "-c:v", "libx264", "-preset", "ultrafast", "-tune", "animation", "-profile:v", "high10","-c:a", "copy", "-c:s", "copy", "-r", framerate, output_path])               
+                if not audio_count  == 0 :
+                    subprocess.run([ffmpeg_path, "-i", video_file_path, "-framerate", framerate,"-i", input_path, "-map", "1:v", "-map", "0:a","-map", "0:s","-c:v", "libx264", "-preset", "ultrafast", "-tune", "animation", "-profile:v", "high10", "-framerate", framerate, "-c:a", "copy", "-c:s", "copy", output_path])               
                 else:
                     subprocess.run([ffmpeg_path, "-r", framerate,"-i", input_path, "-c:v", "libx264", "-preset", "ultrafast", "-tune", "animation", "-profile:v", "high10",  "-r", framerate, output_path])
+                    
             def conversion():
                 inicio = input("Desea convertir a los frames a video (y/n) ")
                 if inicio == "y":
@@ -204,7 +204,7 @@ def main_global():
             a,frames_slect_re, k_vector= folder_scale(opcion)
             real_cugan_ncnn_image()
             opcion2 = preguntar_texto_2()
-            real_cugan_ncnn_video()
+            scaled_path = real_cugan_ncnn_video()
             conversion()
             
             while True:
