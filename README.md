@@ -15,7 +15,7 @@ Extract the files from the downloaded ZIP file and navigate to the folder where 
 
 Open a command prompt window and navigate to the folder where the script is located.
 
-Type the command "python main_global.py" and press enter to run the script.
+Type the command "real-cugan-ncnn-vulkan-script.py" and press enter to run the script.
 
 The script will prompt you to select whether you want to rescale an image or video. Choose "I" for image or "V" for video.
 
