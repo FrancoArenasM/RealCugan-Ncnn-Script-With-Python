@@ -181,7 +181,7 @@ def main_global():
                 input_path = os.path.join(scaled_path, "%09d.jpg")
                 output_path = os.path.join(video_frames_folder, os.path.splitext(video_file_path)[0]+"4K-RC.mkv")
                 if not audio_count  == 0 :
-                    subprocess.run([ffmpeg_path, "-i", video_file_path, "-framerate", framerate,"-i", input_path, "-map", "1:v", "-map", "0:a","-map", "0:s","-c:v", "libx264", "-preset", "ultrafast", "-tune", "animation", "-profile:v", "high10", "-framerate", framerate, "-c:a", "copy", "-c:s", "copy", output_path])               
+                    subprocess.run([ffmpeg_path, "-i", video_file_path, "-framerate", framerate,"-i", input_path, "-map", "1:v", "-map", "0:a","-map", "0:s?","-c:v", "libx264", "-preset", "ultrafast", "-tune", "animation", "-profile:v", "high10", "-framerate", framerate, "-c:a", "copy", "-c:s", "copy", output_path])               
                 else:
                     subprocess.run([ffmpeg_path, "-r", framerate,"-i", input_path, "-c:v", "libx264", "-preset", "ultrafast", "-tune", "animation", "-profile:v", "high10",  "-r", framerate, output_path])
                     
